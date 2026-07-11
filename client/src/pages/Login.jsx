@@ -193,15 +193,7 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Hint */}
-          <div className="mt-8 p-4 rounded-2xl text-xs"
-            style={{ background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.12)" }}>
-            <p className="font-semibold mb-1.5" style={{ color: "#9898B8" }}>পরীক্ষার অ্যাকাউন্ট:</p>
-            <div className="space-y-0.5" style={{ color: "var(--text-muted)" }}>
-              <p>ইমেইল: <span style={{ color: "#A78BFA" }}>kabir@gmail.com</span></p>
-              <p>পাসওয়ার্ড: <span style={{ color: "#A78BFA" }}>password123</span></p>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
