@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 // CORS — allow localhost dev + production Vercel client
 const allowedOrigins = [
   "http://localhost:5173",
-  "http://localhost:4173",
+  "https://k-finance-five.vercel.app",
   process.env.CLIENT_URL, // set this in Render env vars
 ].filter(Boolean);
 
