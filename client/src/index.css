@@ -1,1 +1,230 @@
 @import "tailwindcss";
+
+/* ===== ROOT VARIABLES ===== */
+:root {
+  --bg-root: #08080F;
+  --bg-card: #0F0F1A;
+  --bg-card-hover: #141428;
+  --border: rgba(139, 92, 246, 0.12);
+  --border-hover: rgba(139, 92, 246, 0.28);
+  --text-primary: #F1F0FF;
+  --text-muted: #6B6B8A;
+  --violet: #7C3AED;
+  --violet-light: #8B5CF6;
+  --emerald: #10B981;
+  --rose: #F43F5E;
+  --amber: #F59E0B;
+}
+
+/* ===== GLOBAL BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-root);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.25);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.45);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ===== GLASS CARD ===== */
+.glass-card {
+  background: rgba(15, 15, 26, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 16px;
+  transition: all 0.25s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(139, 92, 246, 0.22);
+  background: rgba(20, 20, 40, 0.8);
+}
+
+/* ===== GRADIENT TEXT ===== */
+.gradient-text-violet {
+  background: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-emerald {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-rose {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== GLOW EFFECTS ===== */
+.glow-violet {
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.25), 0 0 48px rgba(124, 58, 237, 0.1);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.2), 0 0 48px rgba(16, 185, 129, 0.08);
+}
+
+.glow-rose {
+  box-shadow: 0 0 24px rgba(244, 63, 94, 0.2), 0 0 48px rgba(244, 63, 94, 0.08);
+}
+
+/* ===== NAV ACTIVE STATE ===== */
+.nav-active {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(79, 70, 229, 0.15));
+  border-left: 2px solid #7C3AED;
+  box-shadow: inset 0 0 20px rgba(124, 58, 237, 0.08);
+}
+
+/* ===== PREMIUM BUTTON ===== */
+.btn-primary {
+  background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%);
+  color: white;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 20px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  border-radius: inherit;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ===== INPUT STYLING ===== */
+.input-field {
+  background: rgba(15, 15, 26, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: 12px;
+  color: #F1F0FF;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.input-field::placeholder {
+  color: #3D3D5C;
+}
+
+.input-field:focus {
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+/* ===== STAT CARD INCOME ===== */
+.stat-income {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.04));
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* ===== STAT CARD EXPENSE ===== */
+.stat-expense {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(244, 63, 94, 0.04));
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+/* ===== SCROLLBAR IN SELECT ===== */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ===== TABLE ROW HOVER ===== */
+.table-row-hover:hover {
+  background: rgba(139, 92, 246, 0.05);
+}
+
+/* ===== BADGE STYLES ===== */
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}

@@ -1,134 +1,199 @@
+import { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   ArrowUp,
   ArrowDown,
   FileText,
-  CheckSquare,
-  Users,
   Settings,
   LogOut,
+  X,
+  Wallet,
 } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
 
-import { NavLink } from "react-router-dom";
+const Sidebar = ({ onClose }) => {
+  const [userName, setUserName] = useState(() => localStorage.getItem("adminName") || "Kabir");
+  const navigate = useNavigate();
 
-const Sidebar = () => {
+  useEffect(() => {
+    const handleUpdate = () => {
+      setUserName(localStorage.getItem("adminName") || "Kabir");
+    };
+    window.addEventListener("settings-update", handleUpdate);
+    return () => window.removeEventListener("settings-update", handleUpdate);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("adminName");
+    localStorage.removeItem("adminEmail");
+    navigate("/login", { replace: true });
+  };
+
   const menuItems = [
-    {
-      title: "ড্যাশবোর্ড",
-      icon: LayoutDashboard,
-      path: "/",
-    },
-    {
-      title: "আয় (Cash In)",
-      icon: ArrowUp,
-      path: "/cash-in",
-    },
-    {
-      title: "ব্যয় (Cash Out)",
-      icon: ArrowDown,
-      path: "/cash-out",
-    },
-    {
-      title: "রিপোর্ট",
-      icon: FileText,
-      path: "/reports",
-    },
-    {
-      title: "অনুদান",
-      icon: CheckSquare,
-      path: "/donations",
-    },
-    {
-      title: "ব্যবহারকারী",
-      icon: Users,
-      path: "/users",
-    },
+    { title: "ড্যাশবোর্ড", icon: LayoutDashboard, path: "/" },
+    { title: "আয় (Cash In)", icon: ArrowUp, path: "/cash-in" },
+    { title: "ব্যয় (Cash Out)", icon: ArrowDown, path: "/cash-out" },
+    { title: "রিপোর্ট", icon: FileText, path: "/reports" },
   ];
 
+  const initials = userName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+
   return (
-    <aside className="w-72 min-h-screen bg-[#0B1220] border-r border-slate-800 flex flex-col">
-      {/* Logo */}
-      <div className="h-20 px-6 flex items-center border-b border-slate-800">
-        <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-400 flex items-center justify-center text-white font-bold text-lg">
-          C
+    <aside
+      className="w-72 min-h-screen flex flex-col select-none"
+      style={{
+        background: "linear-gradient(180deg, #0C0C1E 0%, #080810 100%)",
+        borderRight: "1px solid rgba(139,92,246,0.1)",
+        fontFamily: "Inter, sans-serif"
+      }}
+    >
+      {/* Logo Header */}
+      <div className="h-[70px] px-5 flex items-center justify-between shrink-0"
+        style={{ borderBottom: "1px solid rgba(139,92,246,0.08)" }}>
+        
+        <div className="flex items-center gap-3">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-base shrink-0"
+            style={{
+              background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
+              boxShadow: "0 0 20px rgba(124,58,237,0.35)"
+            }}
+          >
+            <Wallet size={16} />
+          </div>
+          <div>
+            <div className="font-extrabold text-sm leading-none gradient-text-violet tracking-wide">
+              K-Finance
+            </div>
+            <div className="text-[10px] mt-0.5 font-medium tracking-widest uppercase"
+              style={{ color: "#3D3D5C" }}>
+              Kabir&apos;s Cash
+            </div>
+          </div>
         </div>
 
-        <div className="ml-3">
-          <h2 className="text-white font-bold text-lg">
-            Creative Cash
-          </h2>
-
-          <p className="text-slate-400 text-xs">
-            Smart Management
-          </p>
-        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="md:hidden w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
+            style={{ color: "#4A4A6A" }}
+            onMouseEnter={e => { e.currentTarget.style.color = "#F1F0FF"; e.currentTarget.style.background = "rgba(139,92,246,0.1)"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "#4A4A6A"; e.currentTarget.style.background = "transparent"; }}
+          >
+            <X size={18} />
+          </button>
+        )}
       </div>
 
-      {/* Menu */}
-      <div className="flex-1 py-4 px-3">
-        <p className="text-xs text-slate-500 uppercase px-3 mb-3">
-          Main Menu
-        </p>
+      {/* Navigation */}
+      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+        <p className="text-[10px] font-bold tracking-widest uppercase px-3 mb-3"
+          style={{ color: "#2E2E4E" }}>Menu</p>
 
-        <div className="space-y-2">
-          {menuItems.map((item, index) => {
-            const Icon = item.icon;
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === "/"}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative ${
+                  isActive ? "nav-active" : ""
+                }`
+              }
+              style={({ isActive }) => ({
+                color: isActive ? "#C4B5FD" : "#52527A",
+                fontWeight: isActive ? "600" : "500",
+              })}
+            >
+              {({ isActive }) => (
+                <>
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200"
+                    style={{
+                      background: isActive ? "rgba(124,58,237,0.2)" : "transparent",
+                      border: isActive ? "1px solid rgba(124,58,237,0.25)" : "1px solid transparent",
+                    }}
+                  >
+                    <Icon size={16} style={{ color: isActive ? "#A78BFA" : "#3D3D5C" }} />
+                  </div>
+                  <span className="text-sm">{item.title}</span>
+                  {isActive && (
+                    <div
+                      className="absolute right-3 w-1.5 h-1.5 rounded-full"
+                      style={{ background: "#7C3AED", boxShadow: "0 0 6px rgba(124,58,237,0.8)" }}
+                    />
+                  )}
+                </>
+              )}
+            </NavLink>
+          );
+        })}
 
-            return (
-              <NavLink
-                key={index}
-                to={item.path}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
-                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                  }`
-                }
-              >
-                <Icon size={20} />
-                <span className="font-medium">
-                  {item.title}
-                </span>
-              </NavLink>
-            );
-          })}
-        </div>
-
-        <p className="text-xs text-slate-500 uppercase px-3 mt-8 mb-3">
-          Settings
-        </p>
+        <div className="my-4" style={{ borderTop: "1px solid rgba(139,92,246,0.06)" }} />
+        <p className="text-[10px] font-bold tracking-widest uppercase px-3 mb-3"
+          style={{ color: "#2E2E4E" }}>General</p>
 
         <NavLink
           to="/settings"
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white"
+          onClick={onClose}
+          className={({ isActive }) =>
+            `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${isActive ? "nav-active" : ""}`
+          }
+          style={({ isActive }) => ({
+            color: isActive ? "#C4B5FD" : "#52527A",
+            fontWeight: isActive ? "600" : "500",
+          })}
         >
-          <Settings size={20} />
-          <span>সেটিংস</span>
+          {({ isActive }) => (
+            <>
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                style={{
+                  background: isActive ? "rgba(124,58,237,0.2)" : "transparent",
+                  border: isActive ? "1px solid rgba(124,58,237,0.25)" : "1px solid transparent",
+                }}
+              >
+                <Settings size={16} style={{ color: isActive ? "#A78BFA" : "#3D3D5C" }} />
+              </div>
+              <span className="text-sm">সেটিংস</span>
+            </>
+          )}
         </NavLink>
-      </div>
+      </nav>
 
-      {/* User */}
-      <div className="border-t border-slate-800 p-4">
-        <div className="flex items-center justify-between bg-slate-900 rounded-xl p-3">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold">
-              A
-            </div>
-
-            <div>
-              <h3 className="text-white text-sm font-semibold">
-                Admin
-              </h3>
-
-              <p className="text-slate-400 text-xs">
-                Administrator
-              </p>
-            </div>
+      {/* User Profile at Bottom */}
+      <div className="px-3 pb-4 shrink-0" style={{ borderTop: "1px solid rgba(139,92,246,0.08)", paddingTop: "12px" }}>
+        <div
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl"
+          style={{ background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.1)" }}
+        >
+          {/* Avatar */}
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0"
+            style={{
+              background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
+              boxShadow: "0 0 12px rgba(124,58,237,0.3)"
+            }}
+          >
+            {initials}
           </div>
-
-          <button className="text-slate-400 hover:text-red-500">
-            <LogOut size={18} />
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-semibold truncate" style={{ color: "#E0DFFF" }}>{userName}</div>
+            <div className="text-[10px]" style={{ color: "#3D3D5C" }}>Administrator</div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors shrink-0"
+            style={{ color: "#3D3D5C" }}
+            title="লগআউট"
+            onMouseEnter={e => { e.currentTarget.style.color = "#F43F5E"; e.currentTarget.style.background = "rgba(244,63,94,0.1)"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "#3D3D5C"; e.currentTarget.style.background = "transparent"; }}
+          >
+            <LogOut size={14} />
           </button>
         </div>
       </div>
